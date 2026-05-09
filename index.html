@@ -585,6 +585,85 @@
     line-height: 1.6;
   }
 
+  /* ═══════ ABOUT ═══════ */
+  .about-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .about-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .about-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--neon);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .about-intro {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+  .about-intro strong { color: var(--text-primary); font-weight: 600; }
+
+  .about-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .about-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 24px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .about-card:hover {
+    border-color: var(--border-glow);
+    background: var(--bg-card-hover);
+  }
+
+  .about-card-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: rgba(57, 255, 20, 0.06);
+    border: 1px solid rgba(57, 255, 20, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-card-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+
+  .about-card-desc {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
   /* ═══════ SOCIAL LINKS ═══════ */
   .social-links {
     display: flex;
@@ -741,6 +820,7 @@
     .nav-socials a { width: 30px; height: 30px; }
 
     .hero-content { grid-template-columns: 1fr; gap: 36px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
     .hero-title { font-size: 2.6rem; }
     .hero-title .line-3 { font-size: 1.4rem; }
     .hero-buttons { flex-direction: column; }
@@ -758,9 +838,13 @@
     .hero { padding: 88px 16px 48px; }
     .hero-title { font-size: 2rem; letter-spacing: -1px; }
     .hero-title .line-3 { font-size: 1rem; }
-    .hero-right { display: none; }
     .hero-desc { font-size: 0.95rem; }
     .hero-tag { font-size: 0.7rem; }
+
+    .code-body { font-size: 0.65rem; padding: 14px 12px; line-height: 1.7; }
+    .code-titlebar { padding: 10px 14px; }
+
+    .about-grid { grid-template-columns: 1fr; gap: 36px; }
 
     .process-steps { grid-template-columns: 1fr; }
     .contact-row { flex-direction: column; align-items: center; }
@@ -789,6 +873,7 @@
 <nav>
   <div class="nav-logo">BLND<span class="blink">_</span></div>
   <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#process">Process</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -859,6 +944,50 @@
           <div class="code-line"><span class="line-num">13</span><span></span></div>
           <div class="code-line"><span class="line-num">14</span><span class="fn">developer</span><span class="punc">.</span><span class="fn">launch</span><span class="punc">(</span><span class="str">"your-project"</span><span class="punc">)</span><span class="punc">;</span></div>
           <div class="code-line"><span class="line-num">15</span><span class="cmt">// → deploying to production... 🚀</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ ABOUT ═══════ -->
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <div class="section-label">About Me</div>
+      <h2 class="section-title">The Person<br>Behind the Screen</h2>
+      <div class="about-name">Blnd Ismail</div>
+      <div class="about-role">Web Developer & Digital Creator</div>
+      <p class="about-intro">
+        Hey! I'm <strong>Blnd</strong> — a web developer based in Iraq who turns your business ideas into real, working websites. No technical background needed on your end. That's my job.
+      </p>
+      <p class="about-intro">
+        I've helped restaurants get digital menus, businesses get professional websites, and brands establish a strong online presence — all built to <strong>actually work</strong> and bring in customers.
+      </p>
+      <p class="about-intro">
+        You tell me what you want. I handle everything — the design, the build, and the launch. Simple as that.
+      </p>
+    </div>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="about-card-icon">🗣️</div>
+        <div>
+          <div class="about-card-title">No Tech Jargon</div>
+          <p class="about-card-desc">We talk in plain language. You'll always know exactly what's happening with your project, step by step — no confusing terms.</p>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">⚡</div>
+        <div>
+          <div class="about-card-title">Fast & Reliable</div>
+          <p class="about-card-desc">Most projects are ready within days, not weeks. I respond within 24 hours and keep you in the loop throughout.</p>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🎯</div>
+        <div>
+          <div class="about-card-title">Built for Your Business</div>
+          <p class="about-card-desc">Your website isn't just pretty — it's designed to attract real customers and represent your business the right way online.</p>
         </div>
       </div>
     </div>
