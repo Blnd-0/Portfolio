@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLND ISMAIL — Web Developer & Digital Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon: #39FF14;
+    --neon-dim: #2bcc10;
+    --neon-glow: rgba(57, 255, 20, 0.15);
+    --neon-glow-strong: rgba(57, 255, 20, 0.35);
+    --bg-deep: #0a0a0f;
+    --bg-card: #111118;
+    --bg-card-hover: #16161f;
+    --bg-code: #0d0d14;
+    --text-primary: #e8e8ed;
+    --text-secondary: #8888a0;
+    --text-dim: #555568;
+    --border: #1e1e2a;
+    --border-glow: rgba(57, 255, 20, 0.12);
+    --purple-accent: #a78bfa;
+    --blue-accent: #60a5fa;
+    --orange-accent: #fb923c;
+    --pink-accent: #f472b6;
+    --line-number: #3a3a4a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ═══════ GRID BACKGROUND ═══════ */
+  .grid-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+      linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ═══════ AMBIENT GLOW ORBS ═══════ */
+  .glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-orb.one {
+    width: 500px; height: 500px;
+    background: rgba(57, 255, 20, 0.06);
+    top: -100px; right: -100px;
+    animation: orbFloat 15s ease-in-out infinite;
+  }
+  .glow-orb.two {
+    width: 400px; height: 400px;
+    background: rgba(167, 139, 250, 0.04);
+    bottom: 20%; left: -100px;
+    animation: orbFloat 20s ease-in-out infinite reverse;
+  }
+  .glow-orb.three {
+    width: 300px; height: 300px;
+    background: rgba(57, 255, 20, 0.04);
+    top: 50%; right: 10%;
+    animation: orbFloat 18s ease-in-out infinite 3s;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(30px, -40px); }
+    50% { transform: translate(-20px, 30px); }
+    75% { transform: translate(40px, 20px); }
+  }
+
+  /* ═══════ SCANLINE ═══════ */
+  .scanline {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(57, 255, 20, 0.008) 2px,
+      rgba(57, 255, 20, 0.008) 4px
+    );
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  /* ═══════ NAVBAR ═══════ */
+  nav {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--neon);
+    text-shadow: 0 0 20px var(--neon-glow-strong);
+    letter-spacing: 2px;
+  }
+  .nav-logo .blink {
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--neon);
+    transition: width 0.3s;
+    box-shadow: 0 0 8px var(--neon-glow-strong);
+  }
+  .nav-links a:hover { color: var(--neon); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-socials {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .nav-socials a {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .nav-socials a:hover {
+    border-color: var(--neon);
+    color: var(--neon);
+    box-shadow: 0 0 16px rgba(57, 255, 20, 0.15);
+  }
+
+  /* ═══════ HERO ═══════ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-content {
+    max-width: 1200px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .hero-left {
+    animation: slideInLeft 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid var(--border-glow);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--neon);
+    margin-bottom: 28px;
+    background: rgba(57, 255, 20, 0.04);
+  }
+  .hero-tag .dot {
+    width: 6px; height: 6px;
+    background: var(--neon);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+    box-shadow: 0 0 8px var(--neon);
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    letter-spacing: -2px;
+  }
+  .hero-title .line-1 { color: var(--text-primary); }
+  .hero-title .highlight {
+    background: linear-gradient(135deg, var(--neon), #7fff00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-title .line-3 {
+    color: var(--text-dim);
+    font-size: 2.2rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .hero-desc {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: var(--neon);
+    color: var(--bg-deep);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    box-shadow: 0 0 30px rgba(57, 255, 20, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 50px rgba(57, 255, 20, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    border-color: var(--neon);
+    color: var(--neon);
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);
+  }
+
+  /* ═══════ FLOATING CODE BLOCK ═══════ */
+  .hero-right {
+    animation: slideInRight 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    perspective: 1000px;
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .code-window {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+      0 0 60px rgba(57, 255, 20, 0.06),
+      0 20px 60px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255,255,255,0.03);
+    animation: codeFloat 6s ease-in-out infinite;
+    position: relative;
+  }
+  .code-window::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px;
+    right: -1px; bottom: -1px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(57, 255, 20, 0.15), transparent 40%, transparent 60%, rgba(167, 139, 250, 0.1));
+    z-index: -1;
+  }
+
+  @keyframes codeFloat {
+    0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+    25% { transform: translateY(-8px) rotateX(1deg) rotateY(-1deg); }
+    50% { transform: translateY(-4px) rotateX(0deg) rotateY(1deg); }
+    75% { transform: translateY(-10px) rotateX(-1deg) rotateY(0deg); }
+  }
+
+  .code-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+  .code-dot.red { background: #ff5f57; }
+  .code-dot.yellow { background: #ffbd2e; }
+  .code-dot.green { background: #28ca41; }
+  .code-filename {
+    margin-left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .code-body {
+    padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.9;
+    overflow-x: auto;
+  }
+
+  .code-line {
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    animation: typeIn 0.5s ease forwards;
+  }
+  .code-line:nth-child(1) { animation-delay: 0.8s; }
+  .code-line:nth-child(2) { animation-delay: 1.0s; }
+  .code-line:nth-child(3) { animation-delay: 1.2s; }
+  .code-line:nth-child(4) { animation-delay: 1.4s; }
+  .code-line:nth-child(5) { animation-delay: 1.6s; }
+  .code-line:nth-child(6) { animation-delay: 1.8s; }
+  .code-line:nth-child(7) { animation-delay: 2.0s; }
+  .code-line:nth-child(8) { animation-delay: 2.2s; }
+  .code-line:nth-child(9) { animation-delay: 2.4s; }
+  .code-line:nth-child(10) { animation-delay: 2.6s; }
+  .code-line:nth-child(11) { animation-delay: 2.8s; }
+  .code-line:nth-child(12) { animation-delay: 3.0s; }
+  .code-line:nth-child(13) { animation-delay: 3.2s; }
+  .code-line:nth-child(14) { animation-delay: 3.4s; }
+  .code-line:nth-child(15) { animation-delay: 3.6s; }
+
+  @keyframes typeIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .line-num {
+    color: var(--line-number);
+    user-select: none;
+    min-width: 20px;
+    text-align: right;
+  }
+
+  .kw { color: var(--purple-accent); }
+  .fn { color: #dcdcaa; }
+  .str { color: var(--neon); }
+  .cmt { color: var(--text-dim); font-style: italic; }
+  .prop { color: var(--blue-accent); }
+  .val { color: var(--orange-accent); }
+  .punc { color: var(--text-secondary); }
+  .type { color: #4ec9b0; }
+
+  /* ═══════ SECTIONS COMMON ═══════ */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 120px 40px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--neon);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '//';
+    color: var(--text-dim);
+  }
+
+  .section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .section-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    max-width: 550px;
+    margin-bottom: 60px;
+  }
+
+  /* ═══════ SERVICES ═══════ */
+  .services-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .service-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 32px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .service-card:hover {
+    border-color: var(--border-glow);
+    transform: translateY(-4px);
+    background: var(--bg-card-hover);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 40px rgba(57, 255, 20, 0.04);
+  }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    background: rgba(57, 255, 20, 0.06);
+    border: 1px solid rgba(57, 255, 20, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+  }
+
+  .service-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .service-desc {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .service-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--neon-dim);
+    background: rgba(57, 255, 20, 0.06);
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(57, 255, 20, 0.08);
+  }
+
+  /* ═══════ PROCESS ═══════ */
+  .process-section {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .process-step {
+    background: var(--bg-card);
+    padding: 40px 28px;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .process-step:hover { background: var(--bg-card-hover); }
+
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: rgba(57, 255, 20, 0.1);
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+
+  .step-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .step-desc {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* ═══════ SOCIAL LINKS ═══════ */
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .social-link {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .social-link:hover {
+    border-color: var(--neon);
+    color: var(--neon);
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* ═══════ CONTACT / CTA ═══════ */
+  .cta-section {
+    text-align: center;
+  }
+
+  .cta-box {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 60px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(57, 255, 20, 0.03), transparent 60%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+
+  .cta-desc {
+    color: var(--text-secondary);
+    margin-bottom: 36px;
+    font-size: 1.05rem;
+  }
+
+  .contact-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+  .contact-item .icon-wrap {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(57, 255, 20, 0.06);
+    border: 1px solid rgba(57, 255, 20, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  /* ═══════ FOOTER ═══════ */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  footer span { color: var(--neon); }
+
+  /* ═══════ HAMBURGER ═══════ */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ═══════ RESPONSIVE ═══════ */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .hamburger { display: flex; }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%; left: 0;
+      width: 100%;
+      flex-direction: column;
+      background: rgba(10, 10, 15, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px 20px;
+      gap: 2px;
+      z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: block;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+    }
+    .nav-links a:hover { background: rgba(57, 255, 20, 0.05); }
+    .nav-links a::after { display: none; }
+    .nav-socials a { width: 30px; height: 30px; }
+
+    .hero-content { grid-template-columns: 1fr; gap: 36px; }
+    .hero-title { font-size: 2.6rem; }
+    .hero-title .line-3 { font-size: 1.4rem; }
+    .hero-buttons { flex-direction: column; }
+    .btn-primary, .btn-secondary { justify-content: center; width: 100%; }
+
+    .services-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+
+    section { padding: 80px 20px; }
+    .section-title { font-size: 2rem; }
+    .cta-box { padding: 40px 28px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero { padding: 88px 16px 48px; }
+    .hero-title { font-size: 2rem; letter-spacing: -1px; }
+    .hero-title .line-3 { font-size: 1rem; }
+    .hero-right { display: none; }
+    .hero-desc { font-size: 0.95rem; }
+    .hero-tag { font-size: 0.7rem; }
+
+    .process-steps { grid-template-columns: 1fr; }
+    .contact-row { flex-direction: column; align-items: center; }
+
+    section { padding: 60px 16px; }
+    .section-title { font-size: 1.75rem; }
+    .section-subtitle { font-size: 0.95rem; }
+
+    .service-card { padding: 28px 20px; }
+    .process-step { padding: 28px 20px; }
+
+    .cta-box { padding: 28px 16px; }
+    .cta-title { font-size: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow-orb one"></div>
+<div class="glow-orb two"></div>
+<div class="glow-orb three"></div>
+<div class="scanline"></div>
+
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <div class="nav-logo">BLND<span class="blink">_</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:12px;">
+  <div class="nav-socials">
+    <a href="https://wa.me/9647503727770" target="_blank" rel="noopener" title="WhatsApp">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/i.blnd.i" target="_blank" rel="noopener" title="Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/i.blnd.i" target="_blank" rel="noopener" title="Facebook">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <span class="dot"></span>
+        Available for projects
+      </div>
+      <h1 class="hero-title">
+        <span class="line-1">I Build</span><br>
+        <span class="highlight">Digital Experiences</span><br>
+        <span class="line-3">Websites · Menus · QR · Brands</span>
+      </h1>
+      <p class="hero-desc">
+        From stunning websites and landing pages to digital menus with QR codes — I design and develop everything your business needs to thrive online.
+      </p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">☎ Get a Quote</a>
+        <a href="#services" class="btn-secondary">→ See Services</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="code-window">
+        <div class="code-titlebar">
+          <span class="code-dot red"></span>
+          <span class="code-dot yellow"></span>
+          <span class="code-dot green"></span>
+          <span class="code-filename">blnd_ismail.js</span>
+        </div>
+        <div class="code-body">
+          <div class="code-line"><span class="line-num">1</span><span class="cmt">// ✦ web developer &amp; digital creator</span></div>
+          <div class="code-line"><span class="line-num">2</span><span></span></div>
+          <div class="code-line"><span class="line-num">3</span><span class="kw">const</span> <span class="fn">developer</span> <span class="punc">=</span> <span class="punc">{</span></div>
+          <div class="code-line"><span class="line-num">4</span>&nbsp;&nbsp;<span class="prop">name</span><span class="punc">:</span> <span class="str">"Blnd Ismail"</span><span class="punc">,</span></div>
+          <div class="code-line"><span class="line-num">5</span>&nbsp;&nbsp;<span class="prop">role</span><span class="punc">:</span> <span class="str">"Full-Stack Web Developer"</span><span class="punc">,</span></div>
+          <div class="code-line"><span class="line-num">6</span>&nbsp;&nbsp;<span class="prop">phone</span><span class="punc">:</span> <span class="str">"0750 372 7770"</span><span class="punc">,</span></div>
+          <div class="code-line"><span class="line-num">7</span>&nbsp;&nbsp;<span class="prop">email</span><span class="punc">:</span> <span class="str">"blndismahil10@gmail.com"</span><span class="punc">,</span></div>
+          <div class="code-line"><span class="line-num">8</span>&nbsp;&nbsp;<span class="prop">builds</span><span class="punc">:</span> <span class="punc">[</span><span class="str">"Websites"</span><span class="punc">,</span> <span class="str">"Menus"</span><span class="punc">,</span></div>
+          <div class="code-line"><span class="line-num">9</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Landing Pages"</span><span class="punc">,</span> <span class="str">"QR"</span><span class="punc">]</span><span class="punc">,</span></div>
+          <div class="code-line"><span class="line-num">10</span>&nbsp;&nbsp;<span class="prop">stack</span><span class="punc">:</span> <span class="punc">[</span><span class="str">"Java"</span><span class="punc">,</span> <span class="str">"Spring"</span><span class="punc">,</span> <span class="str">"React"</span><span class="punc">,</span> <span class="str">"HTML/CSS"</span><span class="punc">]</span><span class="punc">,</span></div>
+          <div class="code-line"><span class="line-num">11</span>&nbsp;&nbsp;<span class="prop">status</span><span class="punc">:</span> <span class="str">"🟢 open to work"</span><span class="punc">,</span></div>
+          <div class="code-line"><span class="line-num">12</span><span class="punc">}</span><span class="punc">;</span></div>
+          <div class="code-line"><span class="line-num">13</span><span></span></div>
+          <div class="code-line"><span class="line-num">14</span><span class="fn">developer</span><span class="punc">.</span><span class="fn">launch</span><span class="punc">(</span><span class="str">"your-project"</span><span class="punc">)</span><span class="punc">;</span></div>
+          <div class="code-line"><span class="line-num">15</span><span class="cmt">// → deploying to production... 🚀</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SERVICES ═══════ -->
+<section id="services">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-label">Services</div>
+    <h2 class="section-title">What I Build</h2>
+    <p class="section-subtitle">Full-spectrum digital solutions — websites, menus, landing pages, and everything in between.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">💻</div>
+      <h3 class="service-title">Custom Websites</h3>
+      <p class="service-desc">Fully responsive, modern websites built from scratch. Business sites, portfolios, blogs — designed to convert visitors into customers.</p>
+      <span class="service-tag">core service</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🚀</div>
+      <h3 class="service-title">Landing Pages</h3>
+      <p class="service-desc">High-converting, single-page sites for product launches, campaigns, and lead generation. Fast, focused, and optimized.</p>
+      <span class="service-tag">high demand</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📋</div>
+      <h3 class="service-title">Digital Menus & QR</h3>
+      <p class="service-desc">Beautiful restaurant menus with branded QR codes. Scannable, mobile-first, and easy to update with seasonal changes.</p>
+      <span class="service-tag">specialty</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <h3 class="service-title">Web Applications</h3>
+      <p class="service-desc">Custom dashboards, booking systems, admin panels — full-stack apps built with Java Spring Boot and modern frontends.</p>
+      <span class="service-tag">advanced</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎨</div>
+      <h3 class="service-title">UI/UX & Branding</h3>
+      <p class="service-desc">Logo design, color systems, typography — a complete visual identity that carries across your website, menus, and socials.</p>
+      <span class="service-tag">included</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PROCESS ═══════ -->
+<section id="process">
+  <div class="process-section">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From Idea to Launch</h2>
+    <p class="section-subtitle">A clear 4-step process. You bring the vision, I bring it to life.</p>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-number">01</div>
+        <h3 class="step-title">Discovery Call</h3>
+        <p class="step-desc">We talk about your business, goals, and what you need. I scope the project and give you a clear quote.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">02</div>
+        <h3 class="step-title">Design & Prototype</h3>
+        <p class="step-desc">I create a visual mockup you can see and click through. Unlimited revisions until it's exactly right.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">03</div>
+        <h3 class="step-title">Develop & Test</h3>
+        <p class="step-desc">Clean, fast code. Responsive on every device. Tested across browsers before you ever see it live.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">04</div>
+        <h3 class="step-title">Launch & Support</h3>
+        <p class="step-desc">Your site goes live. I handle deployment, domain setup, and provide ongoing support to keep everything running.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════ CONTACT ═══════ -->
+<section id="contact" class="cta-section">
+  <div class="cta-box">
+    <div class="section-label" style="justify-content:center;">Get In Touch</div>
+    <h2 class="cta-title">Let's Build<br>Something Great</h2>
+    <p class="cta-desc">Whether it's a full website, a digital menu, or a landing page — drop me a message and I'll get back within 24 hours with a tailored plan.</p>
+    <a href="mailto:blndismahil10@gmail.com" class="btn-primary">✉ Send a Message</a>
+    <div class="contact-row">
+      <div class="contact-item">
+        <span class="icon-wrap">📞</span>
+        0750 372 7770
+      </div>
+      <div class="contact-item">
+        <span class="icon-wrap">✉</span>
+        blndismahil10@gmail.com
+      </div>
+    </div>
+    <div class="social-links">
+      <a href="https://wa.me/9647503727770" target="_blank" rel="noopener" class="social-link" title="WhatsApp">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/i.blnd.i" target="_blank" rel="noopener" class="social-link" title="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/i.blnd.i" target="_blank" rel="noopener" class="social-link" title="Facebook">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div style="display:flex;justify-content:center;gap:16px;margin-bottom:16px;">
+    <a href="https://wa.me/9647503727770" target="_blank" rel="noopener" class="social-link" title="WhatsApp">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/i.blnd.i" target="_blank" rel="noopener" class="social-link" title="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/i.blnd.i" target="_blank" rel="noopener" class="social-link" title="Facebook">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+  </div>
+  <span>&lt;/&gt;</span> Built by Blnd Ismail · 2026 · All rights reserved
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+</script>
+
+</body>
+</html>
